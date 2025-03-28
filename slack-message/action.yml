@@ -23,19 +23,19 @@ runs:
       shell: bash
 
     - if: inputs.status == 'pending'
-      id: build_images
+      id: build-images
       run: echo "message=$(python ${{ github.action_path }}/build_message.py)" >> $GITHUB_OUTPUT
       shell: bash
       env:
         MESSAGE_TEMPLATE: images
 
-    - if: steps.build_images.outputs.message
+    - if: steps.build-images.outputs.message
       uses: slackapi/slack-github-action@v1.26.0
       with:
         channel-id: ${{ inputs.channel-id }}
-        payload: ${{ steps.build_images.outputs.message }}
+        payload: ${{ steps.build-images.outputs.message }}
 
-    - id: build_message
+    - id: build-message
       run: echo "message=$(python ${{ github.action_path }}/build_message.py)" >> $GITHUB_OUTPUT
       shell: bash
       env:
@@ -45,5 +45,5 @@ runs:
       uses: slackapi/slack-github-action@v1.26.0
       with:
         channel-id: ${{ inputs.channel-id }}
-        payload: ${{ steps.build_message.outputs.message }}
+        payload: ${{ steps.build-message.outputs.message }}
         update-ts: ${{ inputs.message-id }}
