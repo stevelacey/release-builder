@@ -10,8 +10,9 @@ GITHUB_ACTOR_URL = f"https://github.com/{GITHUB_ACTOR}"
 GITHUB_ASSETS_URL = os.environ.get("GITHUB_ASSETS_URL", "")
 GITHUB_REPOSITORY = os.environ.get("GITHUB_REPOSITORY", "")
 GITHUB_REPOSITORY_URL = f"https://github.com/{GITHUB_REPOSITORY}"
-GITHUB_RUN_ATTEMPT = os.environ.get("GITHUB_RUN_ATTEMPT", "1")
+GITHUB_RUN_ATTEMPT = os.environ.get("GITHUB_RUN_ATTEMPT", "")
 GITHUB_RUN_ID = os.environ.get("GITHUB_RUN_ID", "")
+GITHUB_RUN_NUMBER = os.environ.get("GITHUB_RUN_NUMBER", "")
 GITHUB_RUN_STATUS_ICON = dict(
     failure=os.environ.get("RELEASE_FAILURE_ICON", "❌"),
     pending=os.environ.get("RELEASE_PENDING_ICON", "⏳"),
@@ -50,9 +51,10 @@ def build_message():
 
     actor = user.get("name", GITHUB_ACTOR)
     actor_link = f"[{actor}]({GITHUB_ACTOR_URL})"
+    icon = GITHUB_RUN_STATUS_ICON
     project = f"{PROJECT_NAME} {release['version']}".strip()
     project_link = f"[{project}]({release['compare_url']})"
-    run_link = f"[{GITHUB_RUN_STATUS_ICON}]({GITHUB_RUN_URL})"
+    run_link = f"[release {GITHUB_RUN_NUMBER}]({GITHUB_RUN_URL})"
     target = TARGET_NAME
     target_link = f"[{target}]({TARGET_URL})"
     verb = "released" if PROJECT_TYPE == "package" else "deployed"
@@ -94,7 +96,7 @@ def build_message():
                     "type": "mrkdwn",
                     "text": truncate_message(
                         transform_markdown(
-                            f"{run_link} {actor_link} {verb} {project_link} to {target_link}\n{release['notes']}"
+                            f"{icon} {actor_link} {verb} {project_link} to {target_link} via {run_link}\n{release['notes']}"
                         ),
                     ),
                 },
