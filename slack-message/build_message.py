@@ -13,11 +13,13 @@ GITHUB_REPOSITORY_URL = f"https://github.com/{GITHUB_REPOSITORY}"
 GITHUB_RUN_ATTEMPT = os.environ.get("GITHUB_RUN_ATTEMPT", "")
 GITHUB_RUN_ID = os.environ.get("GITHUB_RUN_ID", "")
 GITHUB_RUN_NUMBER = os.environ.get("GITHUB_RUN_NUMBER", "")
-GITHUB_RUN_STATUS_ICON = dict(
-    failure=os.environ.get("RELEASE_FAILURE_ICON", "❌"),
-    pending=os.environ.get("RELEASE_PENDING_ICON", "⏳"),
-    success=os.environ.get("RELEASE_SUCCESS_ICON", "🚀"),
-).get(os.environ.get("RELEASE_STATUS", "pending"), os.environ.get("RELEASE_ICON", "🚀"))
+RELEASE_ICONS = {
+    "failure": os.environ.get("RELEASE_FAILURE_ICON", "❌"),
+    "pending": os.environ.get("RELEASE_PENDING_ICON", "⏳"),
+    "success": os.environ.get("RELEASE_SUCCESS_ICON", "🚀"),
+}
+RELEASE_STATUS = os.environ.get("RELEASE_STATUS", "pending")
+GITHUB_RUN_STATUS_ICON = RELEASE_ICONS.get(RELEASE_STATUS, RELEASE_ICONS["failure"])
 GITHUB_RUN_URL = f"{GITHUB_REPOSITORY_URL}/actions/runs/{GITHUB_RUN_ID}/attempts/{GITHUB_RUN_ATTEMPT}"
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 GITHUB_USER_ATTACHMENTS_URL = "https://github.com/user-attachments"
